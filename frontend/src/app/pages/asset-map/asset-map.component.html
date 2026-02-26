@@ -1,0 +1,34 @@
+<div class="map-page">
+
+  <div id="asset-map"></div>
+
+  <!-- Panneau flottant -->
+  <div class="overlay-panel">
+    <div class="panel-header">
+      <span class="title">Actifs</span>
+      @if (!loading) {
+        <span class="badge">{{ totalAssets }}</span>
+      }
+    </div>
+
+    @if (loading) {
+      <div class="state-msg">Chargement…</div>
+    } @else if (error) {
+      <div class="state-msg error">Erreur de chargement</div>
+    } @else {
+      <ul class="legend">
+        @for (entry of legendEntries; track entry.key) {
+          <li class="legend-item">
+            <span class="dot" [style.background]="entry.color"></span>
+            <span class="label">{{ entry.label }}</span>
+          </li>
+        }
+        <li class="legend-item cluster-row">
+          <span class="cluster-dot">N</span>
+          <span class="label">Cluster (zoom+)</span>
+        </li>
+      </ul>
+    }
+  </div>
+
+</div>

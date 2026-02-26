@@ -1,0 +1,180 @@
+import os
+from pathlib import Path
+
+from dotenv import load_dotenv
+
+# BASE_DIR pointe sur le dossier backend/
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Charge les variables depuis backend/.env dans os.environ
+# Si le fichier n'existe pas (CI/CD, prod), os.environ est déjà peuplé — pas d'erreur
+load_dotenv(BASE_DIR / ".env")
+
+# GDAL + GEOS — requis par django.contrib.gis (Windows uniquement)
+if gdal_path := os.environ.get("GDAL_LIBRARY_PATH"):
+    GDAL_LIBRARY_PATH = gdal_path
+if geos_path := os.environ.get("GEOS_LIBRARY_PATH"):
+    GEOS_LIBRARY_PATH = geos_path
+
+# ─────────────────────────────────────────────────────────
+# Sécurité
+# ─────────────────────────────────────────────────────────
+
+# clé
+SECRET_KEY = os.environ["SECRET_KEY"]
+
+# changer si prod ou dev
+DEBUG = os.environ.get("DEBUG", "False") == "True"
+
+# Hotes autorisés
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
+
+
+# ─────────────────────────────────────────────────────────
+# Applications installées
+# ─────────────────────────────────────────────────────────
+
+INSTALLED_APPS = [
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    # Support géospatial (PostGIS)
+    "django.contrib.gis",
+    # API REST
+    "rest_framework",
+    "rest_framework_gis",
+    # CORS pour Angular
+    "corsheaders",
+    # Filtres de recherche
+    "django_filters",
+    # Application principale
+    "api",
+    # Widget Leaflet pour l'admin GeoDjango
+    "leaflet",
+]
+
+# ─────────────────────────────────────────────────────────
+# Leaflet — configuration du widget admin
+# ─────────────────────────────────────────────────────────
+
+LEAFLET_CONFIG = {
+    "DEFAULT_CENTER": (48.6921, 6.1844),  # Nancy
+    "DEFAULT_ZOOM": 13,
+    "MIN_ZOOM": 10,
+    "MAX_ZOOM": 19,
+    # Restreint la carte à la ville de Nancy
+    "MAX_BOUNDS": [[48.66, 6.14], [48.73, 6.24]],
+    "TILES": [
+        (
+            "OpenStreetMap",
+            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {"attribution": "© OpenStreetMap contributors", "maxZoom": 19},
+        )
+    ],
+    "RESET_VIEW": False,
+}
+
+# ─────────────────────────────────────────────────────────
+# Middleware
+# ─────────────────────────────────────────────────────────
+
+MIDDLEWARE = [
+    # CorsMiddleware DOIT être en premier pour intercepter les requêtes OPTIONS
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+ROOT_URLCONF = "core.urls"
+
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
+    },
+]
+
+WSGI_APPLICATION = "core.wsgi.application"
+
+
+# ─────────────────────────────────────────────────────────
+# Base de données
+# ─────────────────────────────────────────────────────────
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
+        "NAME": os.environ.get("DB_NAME", "assets_db"),
+        "USER": os.environ.get("DB_USER", "postgres"),
+        "PASSWORD": os.environ.get("DB_PASSWORD", ""),
+        "HOST": os.environ.get("DB_HOST", "localhost"),
+        "PORT": os.environ.get("DB_PORT", "5432"),
+    }
+}
+
+# ─────────────────────────────────────────────────────────
+# CORS — Autorisations cross-origin pour Angular
+# ─────────────────────────────────────────────────────────
+
+# Ex : CORS_ALLOWED_ORIGINS=http://localhost:4200,https://mon-app.fr
+CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS", "").split(",")
+
+
+# ─────────────────────────────────────────────────────────
+# Django REST Framework
+# ─────────────────────────────────────────────────────────
+
+REST_FRAMEWORK = {
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+    ],
+}
+
+
+# ─────────────────────────────────────────────────────────
+# Validation des mots de passe
+# ─────────────────────────────────────────────────────────
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+    },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+]
+
+
+# ─────────────────────────────────────────────────────────
+# Internationalisation
+# ─────────────────────────────────────────────────────────
+
+LANGUAGE_CODE = "fr-fr"
+TIME_ZONE = "Europe/Paris"
+USE_I18N = True
+USE_TZ = True
+
+
+# ─────────────────────────────────────────────────────────
+# Fichiers statiques & divers
+# ─────────────────────────────────────────────────────────
+
+STATIC_URL = "static/"
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
