@@ -1,0 +1,23 @@
+# Variables d'environnement — ne JAMAIS commiter
+.env
+
+# Environnement virtuel Python
+venv/
+.venv/
+env/
+
+# Bytecode Python compilé
+__pycache__/
+*.py[cod]
+
+# Fichiers de couverture de tests
+.coverage
+htmlcov/
+
+# Logs
+*.log
+
+# Fichiers IDE
+.vscode/
+.idea/
+*.swp

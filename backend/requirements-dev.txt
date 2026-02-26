@@ -1,0 +1,12 @@
+# Inclut toutes les dépendances de prod
+-r requirements.txt
+
+# --- Qualité de code (ruff remplace black + isort + flake8) ---
+ruff==0.4.1            # Linter + formateur ultra-rapide (écrit en Rust)
+
+
+# --- Sécurité ---
+bandit==1.7.8          # Détection de failles de sécurité statiques
+
+# --- Pre-commit ---
+pre-commit==3.7.0      # Framework de hooks git

@@ -1,0 +1,16 @@
+repos:
+  # Ruff — Linter et Formateur Python 
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.2
+    hooks:
+      # Linting avec auto-fix (détecte les erreurs, trie les imports)
+      - id: ruff-check
+        args: [ --fix ]
+      # Formatage du code 
+      - id: ruff-format
+
+  # Gitleaks — Détection de secrets dans le code
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.24.2
+    hooks:
+      - id: gitleaks

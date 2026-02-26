@@ -1,0 +1,12 @@
+# --- Framework de base ---
+Django==5.0.2
+psycopg2-binary==2.9.9       # Driver PostgreSQL/PostGIS
+
+# --- Utilitaires ---
+python-dotenv==1.0.1           # Gestion des variables d'environnement
+
+# --- API & Geo ---
+djangorestframework==3.14.0
+djangorestframework-gis==1.1.0  # Support GeoJSON pour DRF
+django-filter==23.5             # Pour les filtres de rayon/catégorie
+django-cors-headers==4.3.1      # Indispensable pour communiquer avec Angular
