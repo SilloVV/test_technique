@@ -1,0 +1,111 @@
+.map-page {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+
+  #asset-map {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.overlay-panel {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 1rem 1.25rem;
+  min-width: 200px;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+
+  .title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #1e293b;
+    flex: 1;
+  }
+
+  .badge {
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.1rem 0.5rem;
+    border-radius: 99px;
+  }
+}
+
+.state-msg {
+  font-size: 0.82rem;
+  color: #64748b;
+
+  &.error { color: #ef4444; }
+}
+
+.legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: #374151;
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(0,0,0,.15);
+    flex-shrink: 0;
+  }
+
+  .label { flex: 1; }
+}
+
+.cluster-row {
+  margin-top: 0.25rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.cluster-dot {
+  width: 20px;
+  height: 20px;
+  background: #1e40af;
+  color: white;
+  border-radius: 50%;
+  font-size: 9px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+::ng-deep .asset-popup {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 0.83rem;
+  line-height: 1.4;
+
+  strong { font-size: 0.9rem; color: #1e293b; }
+  .status { color: #64748b; }
+  small { color: #94a3b8; margin-top: 2px; }
+}
