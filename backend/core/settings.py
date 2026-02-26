@@ -10,6 +10,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Si le fichier n'existe pas (CI/CD, prod), os.environ est déjà peuplé — pas d'erreur
 load_dotenv(BASE_DIR / ".env")
 
+# GDAL + GEOS — requis par django.contrib.gis (Windows uniquement)
+if gdal_path := os.environ.get("GDAL_LIBRARY_PATH"):
+    GDAL_LIBRARY_PATH = gdal_path
+if geos_path := os.environ.get("GEOS_LIBRARY_PATH"):
+    GEOS_LIBRARY_PATH = geos_path
+
 # ─────────────────────────────────────────────────────────
 # Sécurité
 # ─────────────────────────────────────────────────────────
@@ -44,6 +50,8 @@ INSTALLED_APPS = [
     "corsheaders",
     # Filtres de recherche
     "django_filters",
+    # Application principale
+    "api",
 ]
 
 # ─────────────────────────────────────────────────────────
@@ -89,11 +97,14 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
+        "NAME": os.environ.get("DB_NAME", "assets_db"),
+        "USER": os.environ.get("DB_USER", "postgres"),
+        "PASSWORD": os.environ.get("DB_PASSWORD", ""),
+        "HOST": os.environ.get("DB_HOST", "localhost"),
+        "PORT": os.environ.get("DB_PORT", "5432"),
     }
 }
-
 
 # ─────────────────────────────────────────────────────────
 # CORS — Autorisations cross-origin pour Angular
