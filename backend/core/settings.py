@@ -52,7 +52,30 @@ INSTALLED_APPS = [
     "django_filters",
     # Application principale
     "api",
+    # Widget Leaflet pour l'admin GeoDjango
+    "leaflet",
 ]
+
+# ─────────────────────────────────────────────────────────
+# Leaflet — configuration du widget admin
+# ─────────────────────────────────────────────────────────
+
+LEAFLET_CONFIG = {
+    "DEFAULT_CENTER": (48.6921, 6.1844),  # Nancy
+    "DEFAULT_ZOOM": 13,
+    "MIN_ZOOM": 10,
+    "MAX_ZOOM": 19,
+    # Restreint la carte à la ville de Nancy
+    "MAX_BOUNDS": [[48.66, 6.14], [48.73, 6.24]],
+    "TILES": [
+        (
+            "OpenStreetMap",
+            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {"attribution": "© OpenStreetMap contributors", "maxZoom": 19},
+        )
+    ],
+    "RESET_VIEW": False,
+}
 
 # ─────────────────────────────────────────────────────────
 # Middleware

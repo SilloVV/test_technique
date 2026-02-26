@@ -5,6 +5,9 @@ psycopg2-binary==2.9.9       # Driver PostgreSQL/PostGIS
 # --- Utilitaires ---
 python-dotenv==1.0.1           # Gestion des variables d'environnement
 
+# --- Admin Geo ---
+django-leaflet==0.31.0         # Widget Leaflet pour l'admin GeoDjango
+
 # --- API & Geo ---
 djangorestframework==3.14.0
 djangorestframework-gis==1.1.0  # Support GeoJSON pour DRF
